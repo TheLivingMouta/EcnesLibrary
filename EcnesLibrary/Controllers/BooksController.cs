@@ -20,9 +20,36 @@ namespace EcnesLibrary.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookGenre, string searchString)
         {
-            return View(await _context.Books.ToListAsync());
+
+            if (_context.Books == null)
+            {
+                return Problem("Entity set 'EcnesLibrary.Books' is null ");
+            }
+
+            IQueryable<string> genreQuery = from b in _context.Books orderby b.Genre select b.Genre;
+
+            var books = from b in _context.Books select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title!.ToUpper().Contains(searchString.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(bookGenre))
+            {
+                books = books.Where(x => x.Genre == bookGenre);
+            }
+
+            var bookGenreVM = new BookGenreFilter
+            {
+                Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Books = await books.ToListAsync(),
+            };
+
+
+            return View(bookGenreVM);
         }
 
         // GET: Books/Details/5

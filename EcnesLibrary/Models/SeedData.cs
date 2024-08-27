@@ -1,7 +1,7 @@
 ﻿using EcnesLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MvcMovie.Data;
+using EcnesLibrary.Data;
 using System;
 using System.Linq;
 

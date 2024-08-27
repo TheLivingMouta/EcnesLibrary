@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EcnesLibrary.Models.Books>
+﻿@model EcnesLibrary.Models.BookGenreFilter
 
 @{
     ViewData["Title"] = "Index";
@@ -9,26 +9,41 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<br />
+
+<form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+
+        <select asp-for="BookGenre" asp-items="Model.Genre">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Books![0].Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                @Html.DisplayNameFor(model => model.Books![0].Author)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @Html.DisplayNameFor(model => model.Books![0].Genre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.Books![0].Price)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Books!) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
