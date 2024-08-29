@@ -4,6 +4,7 @@ using EcnesLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcnesLibrary.Migrations
 {
     [DbContext(typeof(EcnesLibraryContext))]
-    partial class EcnesLibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240829110031_AddingAuthorFK")]
+    partial class AddingAuthorFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,12 +50,8 @@ namespace EcnesLibrary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
                     b.Property<int?>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Genre")
@@ -76,14 +75,13 @@ namespace EcnesLibrary.Migrations
 
             modelBuilder.Entity("EcnesLibrary.Models.Books", b =>
                 {
-                    b.HasOne("EcnesLibrary.Models.Author", null)
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId");
-                });
+                    b.HasOne("EcnesLibrary.Models.Author", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("EcnesLibrary.Models.Author", b =>
-                {
-                    b.Navigation("Books");
+                    b.Navigation("Author");
                 });
 #pragma warning restore 612, 618
         }

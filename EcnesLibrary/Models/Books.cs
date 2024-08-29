@@ -15,6 +15,7 @@ public class Books
 
     [StringLength(60, MinimumLength = 3)]
     [Required]
+    [ForeignKey("Author")]
     public string Author { get; set; }
     public string Genre { get; set; }
 

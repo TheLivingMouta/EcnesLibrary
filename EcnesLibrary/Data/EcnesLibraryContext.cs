@@ -15,5 +15,6 @@ namespace EcnesLibrary.Data
         }
 
         public DbSet<EcnesLibrary.Models.Books> Books { get; set; }
+        public DbSet<EcnesLibrary.Models.Author> Author { get; set; }
     }
 }
